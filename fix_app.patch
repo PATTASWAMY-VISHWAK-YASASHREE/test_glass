@@ -1,0 +1,11 @@
+--- src/App.tsx
++++ src/App.tsx
+@@ -38,7 +38,7 @@
+   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+     requestAnimationFrame(() => {
+       setScroll((event?.target as any)?.scrollTop)
+-
++    })
+   }
+
+   const scrollingOverBrightSection = scroll > 230 && scroll < 500
