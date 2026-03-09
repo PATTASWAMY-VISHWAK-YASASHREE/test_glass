@@ -1,7 +1,7 @@
 
 import { useState, useRef } from "react"
 import LiquidGlass from "./components/liquid-glass"
-import { LogOutIcon, Github } from "lucide-react"
+import { LogOutIcon, Github, Mail, Lock } from "lucide-react"
 
 
 
@@ -29,8 +29,18 @@ export default function App() {
   const [logoutOverLight, setLogoutOverLight] = useState(false)
   const [logoutMode, setLogoutMode] = useState<"standard" | "polar" | "prominent" | "shader">("standard")
 
+  // Login Form Controls
+  const [loginDisplacementScale, setLoginDisplacementScale] = useState(90)
+  const [loginBlurAmount, setLoginBlurAmount] = useState(0.35)
+  const [loginSaturation, setLoginSaturation] = useState(150)
+  const [loginAberrationIntensity, setLoginAberrationIntensity] = useState(2)
+  const [loginElasticity, setLoginElasticity] = useState(0.1)
+  const [loginCornerRadius, setLoginCornerRadius] = useState(28)
+  const [loginOverLight, setLoginOverLight] = useState(false)
+  const [loginMode, setLoginMode] = useState<"standard" | "polar" | "prominent" | "shader">("standard")
+
   // Shared state
-  const [activeTab, setActiveTab] = useState<"userInfo" | "logOut">("userInfo")
+  const [activeTab, setActiveTab] = useState<"userInfo" | "logOut" | "login">("userInfo")
   const containerRef = useRef<HTMLDivElement>(null)
 
   const [scroll, setScroll] = useState(0)
@@ -144,6 +154,58 @@ export default function App() {
             </h3>
           </LiquidGlass>
         )}
+
+        {activeTab === "login" && (
+          <LiquidGlass
+            displacementScale={loginDisplacementScale}
+            blurAmount={loginBlurAmount}
+            saturation={loginSaturation}
+            aberrationIntensity={loginAberrationIntensity}
+            elasticity={loginElasticity}
+            cornerRadius={loginCornerRadius}
+            mouseContainer={containerRef}
+            overLight={scrollingOverBrightSection || loginOverLight}
+            mode={loginMode}
+            style={{
+              position: "fixed",
+              top: "18%",
+              left: "35%",
+            }}
+          >
+            <div className="w-80">
+              <h3 className="text-xl font-semibold mb-1">Welcome back</h3>
+              <p className="text-sm text-white/80 mb-5">Sign in to continue</p>
+              <form className="space-y-3">
+                <label className="block">
+                  <span className="text-sm text-white/90 mb-1 block">Email</span>
+                  <span className="relative block">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70" />
+                    <input type="email" autoComplete="username" placeholder="john.doe@example.com" className="w-full rounded-xl border border-white/20 bg-black/20 text-white placeholder:text-white/60 pl-10 pr-3 py-2.5 outline-none focus:ring-2 focus:ring-blue-300/60" />
+                  </span>
+                </label>
+                <label className="block">
+                  <span className="text-sm text-white/90 mb-1 block">Password</span>
+                  <span className="relative block">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70" />
+                    <input type="password" autoComplete="current-password" placeholder="••••••••" className="w-full rounded-xl border border-white/20 bg-black/20 text-white placeholder:text-white/60 pl-10 pr-3 py-2.5 outline-none focus:ring-2 focus:ring-blue-300/60" />
+                  </span>
+                </label>
+                <div className="flex justify-between items-center pt-1">
+                  <label className="flex items-center gap-2 text-sm text-white/90">
+                    <input type="checkbox" className="accent-blue-500" />
+                    Remember me
+                  </label>
+                  <button type="button" className="text-sm text-blue-200 hover:text-blue-100 transition-colors">
+                    Forgot password?
+                  </button>
+                </div>
+                <button type="submit" className="w-full mt-2 rounded-xl bg-white/20 hover:bg-white/30 transition-colors text-white font-medium py-2.5 border border-white/20">
+                  Sign in
+                </button>
+              </form>
+            </div>
+          </LiquidGlass>
+        )}
       </div>
 
       {/* Right Panel - Control Panel */}
@@ -173,6 +235,12 @@ export default function App() {
             className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === "logOut" ? "bg-blue-500 text-white shadow-lg" : "text-white/70 hover:text-white hover:bg-white/10"}`}
           >
             Log Out Button
+          </button>
+          <button
+            onClick={() => setActiveTab("login")}
+            className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === "login" ? "bg-blue-500 text-white shadow-lg" : "text-white/70 hover:text-white hover:bg-white/10"}`}
+          >
+            Login Page
           </button>
         </div>
 
@@ -433,6 +501,138 @@ export default function App() {
                 <div className="flex items-center space-x-3">
                   <input type="checkbox" id="logoutOverLight" checked={logoutOverLight} onChange={(e) => setLogoutOverLight(e.target.checked)} className="w-5 h-5 accent-blue-500" />
                   <label htmlFor="logoutOverLight" className="text-sm text-white/90">
+                    Tint liquid glass dark (use for bright backgrounds)
+                  </label>
+                </div>
+                <p className="text-xs text-white/50 mt-2">Makes the glass darker for better visibility on light backgrounds</p>
+              </div>
+            </>
+          )}
+
+          {activeTab === "login" && (
+            <>
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Refraction Mode</span>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      id="loginModeStandard"
+                      name="loginMode"
+                      value="standard"
+                      checked={loginMode === "standard"}
+                      onChange={(e) => setLoginMode(e.target.value as "standard" | "polar" | "prominent" | "shader")}
+                      className="w-4 h-4 accent-blue-500"
+                    />
+                    <label htmlFor="loginModeStandard" className="text-sm text-white/90">
+                      Standard
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      id="loginModePolar"
+                      name="loginMode"
+                      value="polar"
+                      checked={loginMode === "polar"}
+                      onChange={(e) => setLoginMode(e.target.value as "standard" | "polar" | "prominent" | "shader")}
+                      className="w-4 h-4 accent-blue-500"
+                    />
+                    <label htmlFor="loginModePolar" className="text-sm text-white/90">
+                      Polar
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      id="loginModeProminent"
+                      name="loginMode"
+                      value="prominent"
+                      checked={loginMode === "prominent"}
+                      onChange={(e) => setLoginMode(e.target.value as "standard" | "polar" | "prominent" | "shader")}
+                      className="w-4 h-4 accent-blue-500"
+                    />
+                    <label htmlFor="loginModeProminent" className="text-sm text-white/90">
+                      Prominent
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      id="loginModeShader"
+                      name="loginMode"
+                      value="shader"
+                      checked={loginMode === "shader"}
+                      onChange={(e) => setLoginMode(e.target.value as "standard" | "polar" | "prominent" | "shader")}
+                      className="w-4 h-4 accent-blue-500"
+                    />
+                    <label htmlFor="loginModeShader" className="text-sm text-white/90">
+                      Shader
+                    </label>
+                  </div>
+                </div>
+                <p className="text-xs text-white/50 mt-2">Controls the refraction calculation method</p>
+              </div>
+
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Displacement Scale</span>
+                <div className="mb-2">
+                  <span className="text-xl font-mono text-blue-300">{loginDisplacementScale}</span>
+                </div>
+                <input type="range" min="0" max="200" step="1" value={loginDisplacementScale} onChange={(e) => setLoginDisplacementScale(Number(e.target.value))} className="w-full" />
+                <p className="text-xs text-white/50 mt-2">Controls the intensity of edge distortion</p>
+              </div>
+
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Blur Amount</span>
+                <div className="mb-2">
+                  <span className="text-xl font-mono text-green-300">{loginBlurAmount.toFixed(1)}</span>
+                </div>
+                <input type="range" min="0" max="1" step="0.01" value={loginBlurAmount} onChange={(e) => setLoginBlurAmount(Number(e.target.value))} className="w-full" />
+                <p className="text-xs text-white/50 mt-2">Controls backdrop blur intensity</p>
+              </div>
+
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Saturation</span>
+                <div className="mb-2">
+                  <span className="text-xl font-mono text-purple-300">{loginSaturation}%</span>
+                </div>
+                <input type="range" min="100" max="300" step="10" value={loginSaturation} onChange={(e) => setLoginSaturation(Number(e.target.value))} className="w-full" />
+                <p className="text-xs text-white/50 mt-2">Controls color saturation of the backdrop</p>
+              </div>
+
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Chromatic Aberration</span>
+                <div className="mb-2">
+                  <span className="text-xl font-mono text-cyan-300">{loginAberrationIntensity}</span>
+                </div>
+                <input type="range" min="0" max="20" step="1" value={loginAberrationIntensity} onChange={(e) => setLoginAberrationIntensity(Number(e.target.value))} className="w-full" />
+                <p className="text-xs text-white/50 mt-2">Controls RGB channel separation intensity</p>
+              </div>
+
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Elasticity</span>
+                <div className="mb-2">
+                  <span className="text-xl font-mono text-orange-300">{loginElasticity.toFixed(2)}</span>
+                </div>
+                <input type="range" min="0" max="1" step="0.05" value={loginElasticity} onChange={(e) => setLoginElasticity(Number(e.target.value))} className="w-full" />
+                <p className="text-xs text-white/50 mt-2">Controls how much the glass reaches toward the cursor</p>
+              </div>
+
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Corner Radius</span>
+                <div className="mb-2">
+                  <span className="text-xl font-mono text-pink-300">{loginCornerRadius === 999 ? "Full" : `${loginCornerRadius}px`}</span>
+                </div>
+                <input type="range" min="0" max="100" step="1" value={loginCornerRadius} onChange={(e) => setLoginCornerRadius(Number(e.target.value))} className="w-full" />
+                <p className="text-xs text-white/50 mt-2">Controls the roundness of the glass corners</p>
+              </div>
+
+              <div>
+                <span className="block text-sm font-semibold text-white/90 mb-3">Over Light</span>
+                <div className="flex items-center space-x-3">
+                  <input type="checkbox" id="loginOverLight" checked={loginOverLight} onChange={(e) => setLoginOverLight(e.target.checked)} className="w-5 h-5 accent-blue-500" />
+                  <label htmlFor="loginOverLight" className="text-sm text-white/90">
                     Tint liquid glass dark (use for bright backgrounds)
                   </label>
                 </div>
