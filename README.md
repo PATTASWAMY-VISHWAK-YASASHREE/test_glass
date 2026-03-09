@@ -1,73 +1,32 @@
-# React + TypeScript + Vite
+# Liquid Glass React Component
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains an exact recreation of the `liquid-glass-react` component adapted for a Vite + React + TypeScript setup, allowing you to easily view and interact with the effect locally.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 
-## React Compiler
+## How to Run It
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Follow these steps to run the application and view the liquid glass effect preview:
 
-## Expanding the ESLint configuration
+1. **Install Dependencies:**
+   Run the following command in the root of the project to install all required packages:
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. **Start the Development Server:**
+   Launch the local Vite server:
+   ```bash
+   npx vite
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+3. **View the Preview:**
+   Once the server starts, it will output a local URL (typically `http://localhost:5173/`).
+   Open that URL in your web browser. You should see the exact demo page from the original repository, complete with the interactive glass container, background elements, and the control panel to tweak the refraction mode, displacement scale, and more.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Notes
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- The component requires WebGL to render properly. Ensure hardware acceleration is enabled in your browser.
+- There is a known limitation with the original shader where edge refraction effects might not render properly on Safari and Firefox. Chromium-based browsers (Chrome, Edge) are recommended for the best experience.
